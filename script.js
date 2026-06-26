@@ -1,12 +1,31 @@
 (function () {
 
-  // ── Tab switching ─────────────────────────────────────
-  window.showTab = function (tab) {
-    document.getElementById('screen-staff').classList.toggle('active', tab === 'staff');
-    document.getElementById('screen-past').classList.toggle('active', tab === 'past');
-    document.getElementById('tab-staff').classList.toggle('active', tab === 'staff');
-    document.getElementById('tab-past').classList.toggle('active', tab === 'past');
+  // ── Navigation ────────────────────────────────────────
+  var backTarget = 'screen-home';
+
+  var backLabels = {
+    'screen-home':        'Home',
+    'screen-instructors': 'Home',
+    'screen-staff':       'Key Staff'
   };
+
+  function setScreen(id, back) {
+    document.querySelectorAll('.screen').forEach(function (s) {
+      s.classList.toggle('active', s.id === id);
+    });
+    backTarget = back || 'screen-home';
+    var onHome = id === 'screen-home';
+    document.getElementById('back-btn').classList.toggle('hidden', onHome);
+    var label = document.getElementById('back-label');
+    if (label) label.textContent = backLabels[backTarget] || 'Back';
+  }
+
+  window.showHome        = function () { setScreen('screen-home'); };
+  window.showInstructors = function () { setScreen('screen-instructors', 'screen-home'); };
+  window.showStaff       = function () { setScreen('screen-staff', 'screen-home'); };
+  window.goBack          = function () { setScreen(backTarget); };
+
+  document.getElementById('back-btn').onclick = function () { window.goBack(); };
 
   // ── Profile modal ─────────────────────────────────────
   function openModal(role, name, bio, photo, tenure) {
@@ -25,8 +44,7 @@
     var img = document.getElementById('modal-photo');
     var sil = document.getElementById('modal-photo-sil');
     if (photo) {
-      img.src = photo;
-      img.style.display = 'block';
+      img.src = photo; img.style.display = 'block';
       sil.classList.add('hidden');
     } else {
       img.style.display = 'none';
@@ -47,184 +65,192 @@
     if (e.key === 'Escape') window.closeModal();
   });
 
-  // ── SVG silhouette markup ─────────────────────────────
+  // ── SVG silhouette ────────────────────────────────────
   var SIL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">' +
     '<circle cx="12" cy="8" r="5"/><path d="M3 21c0-5 3.582-9 9-9s9 4 9 9"/></svg>';
 
-  // ── Build staff row ───────────────────────────────────
-  function buildStaffRow(staffList) {
-    var row = document.getElementById('staff-row');
-    row.innerHTML = '';
-
-    // Role order: RSM first (featured), then COS, ADJ, FIN
-    var roleOrder = ['rsm', 'cos', 'adj', 'fin'];
-    var sorted = staffList.slice().sort(function (a, b) {
-      var ai = roleOrder.indexOf((a.role_short || '').toLowerCase());
-      var bi = roleOrder.indexOf((b.role_short || '').toLowerCase());
-      if (ai < 0) ai = 99;
-      if (bi < 0) bi = 99;
-      return ai - bi;
-    });
-
-    sorted.forEach(function (s, i) {
-      var isRSM = (s.role_short || '').toLowerCase() === 'rsm';
-      var hasProfile = !!(s.bio && s.bio.trim());
-      var vacant = !(s.name && s.name.trim());
-
-      var card = document.createElement('div');
-      card.className = 'staff-card' + (isRSM ? ' rsm' : '');
-      card.style.animationDelay = (i * 60) + 'ms';
-
-      // Photo wrap
-      var wrap = document.createElement('div');
-      wrap.className = 'staff-photo-wrap';
-
-      if (s.photo) {
-        var img = document.createElement('img');
-        img.className = 'staff-photo';
-        img.src = s.photo;
-        img.alt = s.name || s.role;
-        img.onerror = function () {
-          img.style.display = 'none';
-          sil.classList.remove('hidden');
-        };
-        var sil = document.createElement('div');
-        sil.className = 'staff-silhouette hidden';
-        sil.innerHTML = SIL_SVG;
-        wrap.appendChild(img);
-        wrap.appendChild(sil);
-      } else {
-        var sil = document.createElement('div');
-        sil.className = 'staff-silhouette';
-        sil.innerHTML = SIL_SVG;
-        wrap.appendChild(sil);
-      }
-
-      // Role badge (between photo and info)
-      var badge = document.createElement('div');
-      badge.className = 'staff-role-badge';
-      var badgeText = document.createElement('span');
-      badgeText.className = 'staff-role-badge-text';
-      badgeText.textContent = s.role || '';
-      badge.appendChild(badgeText);
-
-      // Info panel
-      var info = document.createElement('div');
-      info.className = 'staff-card-info';
-
-      var nameEl = document.createElement('div');
-      nameEl.className = 'staff-card-name';
-      nameEl.textContent = s.name || '';
-
-      var btn = document.createElement('button');
-      btn.className = 'staff-profile-btn' + (hasProfile ? '' : ' hidden');
-      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg> View Profile';
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        openModal(s.role, s.name, s.bio, s.photo, '');
-      });
-
-      info.appendChild(nameEl);
-      info.appendChild(btn);
-
-      card.appendChild(wrap);
-      card.appendChild(badge);
-      card.appendChild(info);
-
-      if (hasProfile) {
-        card.addEventListener('click', function () {
-          openModal(s.role, s.name, s.bio, s.photo, '');
-        });
-      }
-
-      row.appendChild(card);
-    });
-  }
-
-  // ── Build past officers grid ──────────────────────────
-  function buildPastGrid(officers) {
-    var grid = document.getElementById('past-grid');
-    var count = document.getElementById('past-count');
+  // ── Build instructors grid ────────────────────────────
+  function buildInstructors(list) {
+    var grid  = document.getElementById('instructors-grid');
+    var count = document.getElementById('instructors-count');
     grid.innerHTML = '';
 
-    count.textContent = officers.length + ' officer' + (officers.length !== 1 ? 's' : '');
+    count.textContent = list.length + ' officer' + (list.length !== 1 ? 's' : '');
 
-    officers.forEach(function (o, i) {
+    list.forEach(function (o, i) {
       var card = document.createElement('div');
-      card.className = 'past-card';
+      card.className = 'officer-card no-hover';
       card.style.animationDelay = (i * 40) + 'ms';
+      card.style.cursor = 'default';
 
-      // Photo wrap
       var wrap = document.createElement('div');
-      wrap.className = 'past-photo-wrap';
-
+      wrap.className = 'officer-photo-wrap';
       if (o.photo) {
         var img = document.createElement('img');
-        img.className = 'past-photo';
-        img.src = o.photo;
-        img.alt = o.name;
-        img.onerror = function () {
-          img.style.display = 'none';
-          sil.classList.remove('hidden');
-        };
+        img.className = 'officer-photo'; img.src = o.photo; img.alt = o.name;
         var sil = document.createElement('div');
-        sil.className = 'past-silhouette hidden';
-        sil.innerHTML = SIL_SVG;
-        wrap.appendChild(img);
-        wrap.appendChild(sil);
+        sil.className = 'officer-silhouette hidden'; sil.innerHTML = SIL_SVG;
+        img.onerror = function () { img.style.display = 'none'; sil.classList.remove('hidden'); };
+        wrap.appendChild(img); wrap.appendChild(sil);
       } else {
         var sil = document.createElement('div');
-        sil.className = 'past-silhouette';
-        sil.innerHTML = SIL_SVG;
+        sil.className = 'officer-silhouette'; sil.innerHTML = SIL_SVG;
         wrap.appendChild(sil);
       }
-
       var gradient = document.createElement('div');
-      gradient.className = 'past-photo-gradient';
+      gradient.className = 'officer-photo-gradient';
       wrap.appendChild(gradient);
 
-      // Footer (role + name + tenure)
       var footer = document.createElement('div');
-      footer.className = 'past-card-footer';
-
-      var roleEl = document.createElement('div');
-      roleEl.className = 'past-card-role';
-      roleEl.textContent = o.role || '';
-
-      var nameEl = document.createElement('div');
-      nameEl.className = 'past-card-name';
-      nameEl.textContent = o.name || '';
-
-      var tenureEl = document.createElement('div');
-      tenureEl.className = 'past-card-tenure';
-      tenureEl.textContent = o.tenure || '';
-
-      footer.appendChild(roleEl);
-      footer.appendChild(nameEl);
-      if (o.tenure) footer.appendChild(tenureEl);
+      footer.className = 'officer-card-footer';
+      footer.innerHTML =
+        '<div class="officer-card-role">'  + (o.role   || '') + '</div>' +
+        '<div class="officer-card-name">'  + (o.name   || '') + '</div>' +
+        (o.tenure ? '<div class="officer-card-tenure">' + o.tenure + '</div>' : '');
 
       card.appendChild(wrap);
       card.appendChild(footer);
-
-      if (o.bio && o.bio.trim()) {
-        card.addEventListener('click', function () {
-          openModal(o.role, o.name, o.bio, o.photo, o.tenure);
-        });
-      } else {
-        card.style.cursor = 'default';
-        card.classList.add('no-hover');
-      }
-
       grid.appendChild(card);
     });
+  }
+
+  // ── Build staff role cards (clean — no person shown) ──
+  function buildStaffRoles(roles) {
+    var grid = document.getElementById('staff-roles-grid');
+    grid.innerHTML = '';
+
+    roles.forEach(function (role, i) {
+      var card = document.createElement('button');
+      card.className = 'role-card';
+      card.style.animationDelay = (i * 60) + 'ms';
+      card.innerHTML =
+        '<div class="role-card-short">' + role.role_short + '</div>' +
+        '<div class="role-card-title">' + role.role + '</div>' +
+        '<div class="role-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>';
+
+      card.addEventListener('click', function () { showRoleDetail(role); });
+      grid.appendChild(card);
+    });
+  }
+
+  // ── Role detail screen ────────────────────────────────
+  function showRoleDetail(role) {
+    document.getElementById('role-detail-short').textContent = role.role_short;
+    document.getElementById('role-detail-title').textContent = role.role;
+
+    var body = document.getElementById('role-detail-body');
+    body.innerHTML = '';
+
+    // Current holder
+    var section = document.createElement('div');
+    section.className = 'role-detail-section';
+
+    var currentLabel = document.createElement('div');
+    currentLabel.className = 'role-detail-section-label';
+    currentLabel.textContent = 'Current';
+    section.appendChild(currentLabel);
+
+    if (role.current && role.current.name) {
+      section.appendChild(makePersonCard(role.role, role.current, true));
+    } else {
+      var empty = document.createElement('div');
+      empty.className = 'role-detail-empty';
+      empty.textContent = 'No current appointment holder on record.';
+      section.appendChild(empty);
+    }
+    body.appendChild(section);
+
+    // Previous holders
+    if (role.previous && role.previous.length) {
+      var prevSection = document.createElement('div');
+      prevSection.className = 'role-detail-section';
+
+      var prevLabel = document.createElement('div');
+      prevLabel.className = 'role-detail-section-label';
+      prevLabel.textContent = 'Previous';
+      prevSection.appendChild(prevLabel);
+
+      role.previous.forEach(function (p) {
+        prevSection.appendChild(makePersonCard(role.role, p, false));
+      });
+
+      body.appendChild(prevSection);
+    }
+
+    setScreen('screen-role-detail', 'screen-staff');
+  }
+
+  function makePersonCard(roleLabel, person, isCurrent) {
+    var card = document.createElement('div');
+    card.className = 'person-card' + (person.bio ? ' clickable' : '');
+
+    var photoWrap = document.createElement('div');
+    photoWrap.className = 'person-photo-wrap';
+
+    if (person.photo) {
+      var img = document.createElement('img');
+      img.className = 'person-photo'; img.src = person.photo; img.alt = person.name;
+      var sil = document.createElement('div');
+      sil.className = 'person-sil hidden'; sil.innerHTML = SIL_SVG;
+      img.onerror = function () { img.style.display = 'none'; sil.classList.remove('hidden'); };
+      photoWrap.appendChild(img); photoWrap.appendChild(sil);
+    } else {
+      var sil = document.createElement('div');
+      sil.className = 'person-sil'; sil.innerHTML = SIL_SVG;
+      photoWrap.appendChild(sil);
+    }
+
+    var shine = document.createElement('div');
+    shine.className = 'person-photo-shine';
+    photoWrap.appendChild(shine);
+
+    var info = document.createElement('div');
+    info.className = 'person-info';
+
+    if (isCurrent) {
+      var badge = document.createElement('div');
+      badge.className = 'person-current-badge';
+      badge.textContent = 'CURRENT';
+      info.appendChild(badge);
+    }
+
+    var nameEl = document.createElement('div');
+    nameEl.className = 'person-name';
+    nameEl.textContent = person.name || '';
+    info.appendChild(nameEl);
+
+    if (person.tenure) {
+      var tenureEl = document.createElement('div');
+      tenureEl.className = 'person-tenure';
+      tenureEl.textContent = person.tenure;
+      info.appendChild(tenureEl);
+    }
+
+    if (person.bio) {
+      var hint = document.createElement('div');
+      hint.className = 'person-bio-hint';
+      hint.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg> Tap to view profile';
+      info.appendChild(hint);
+    }
+
+    card.appendChild(photoWrap);
+    card.appendChild(info);
+
+    if (person.bio) {
+      card.addEventListener('click', function () {
+        openModal(roleLabel, person.name, person.bio, person.photo, person.tenure);
+      });
+    }
+
+    return card;
   }
 
   // ── Load data ─────────────────────────────────────────
   fetch('data.json')
     .then(function (r) { return r.json(); })
     .then(function (data) {
-      buildStaffRow(data.staff || []);
-      buildPastGrid(data.past_officers || []);
+      buildInstructors(data.instructors || []);
+      buildStaffRoles(data.staff_roles || []);
     })
     .catch(function (e) { console.error('data.json load error', e); });
 

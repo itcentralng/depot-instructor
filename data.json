@@ -1,76 +1,10 @@
 {
-  "staff": [
-    {
-      "role": "Regimental Sergeant Major",
-      "role_short": "RSM",
-      "name": "MWO Amos Kassem",
-      "photo": "assets/images/staff/rsm.jpeg",
-      "bio": "Warrant Officer (Class One) Amos Kassem was born in 1973 to the family of Mr and Mrs Lupwi K. Chingyin in Lur District of Kanke Local Government Area of Plateau State. He was enlisted into the Nigerian Army in 1993 as a member of 36 Regular Intake.\n\nThroughout his military career, WO1 Kassem has served with commitment, professionalism and loyalty, contributing to the maintenance of peace, security and the defence of Nigeria's territorial integrity. His experience spans several years of active service during which he has participated in military operations, training exercises and internal security operations. His leadership qualities, commitment to regimentation and dedication to mentoring young soldiers have earned him the respect of colleagues and superiors alike.\n\nHe has attended various military courses including: Counter-Terrorist Course (Jaji), Amphibious Course (Calabar), Quick Response Course (Jaji), Regimental Intelligence Course TEGO (Lagos), Platoon Weapon Course (Jaji), Security Management (Bajams, Zaria), and Warrant Officer Academy Course (Jaji).\n\nHe holds a National Diploma in Security Management from Nuhu Bamalli Polytechnic, Zaria.\n\nHe has served in the following operations: ECOMOG, Operation Harmony IV Bakassi, African Mission in Sudan, Operation Hadin Kai (Maiduguri), Operation Polo Shield (Port Harcourt), and ECOMIG 4.\n\nWO1 Kassem is happily married and blessed with three children."
-    },
-    {
-      "role": "Chief of Staff",
-      "role_short": "COS",
-      "name": "",
-      "photo": "",
-      "bio": ""
-    },
-    {
-      "role": "Adjutant",
-      "role_short": "ADJ",
-      "name": "",
-      "photo": "",
-      "bio": ""
-    },
-    {
-      "role": "Finance Officer",
-      "role_short": "FIN",
-      "name": "",
-      "photo": "",
-      "bio": ""
-    }
-  ],
-  "past_officers": [
-    {
-      "name": "Col A.A. Adebayo",
-      "role": "Pioneer Chief of Staff",
-      "tenure": "5 Jun 2025 – 29 Jan 2026",
-      "photo": "assets/images/past-officers/col_aa_adebayo_pioneer_chief_of_staff_5_jun_25_-_29_jan_26.jpeg"
-    },
-    {
-      "name": "Col A.A. Oduleye",
-      "role": "Pioneer Catering Officer",
-      "tenure": "5 Jun 2025 – 23 Jan 2026",
-      "photo": "assets/images/past-officers/col_aa_oduleye_pioneer_catering_officer_5_jun_25_-_23_jan_26.jpeg"
-    },
+  "instructors": [
     {
       "name": "Lt Col A.H. Adam",
       "role": "Pioneer Chief Instructor, Training Branch",
       "tenure": "5 Jun 2025 – 24 Feb 2026",
       "photo": "assets/images/past-officers/lt_col_ah_adam_pioneer_chief_instructor_training_branch_5_jun_25_-_24_feb_26.jpeg"
-    },
-    {
-      "name": "Maj D.R. Okoh",
-      "role": "Pioneer Acting CO, Military Intelligence Regiment",
-      "tenure": "5 Jun 2025 – 1 Jan 2026",
-      "photo": "assets/images/past-officers/maj_dr_okoh_pioneer_acting_commanding_officer_military_intelligent_regiment_5_jun_25_-_1_jan_26.jpg"
-    },
-    {
-      "name": "Maj Y.I. Bagudu",
-      "role": "Pioneer CO, Transport Battalion",
-      "tenure": "5 Jun 2025 – 10 Apr 2026",
-      "photo": "assets/images/past-officers/maj_yi_bagudu_pioneer_co_transport_battalion_5_jun_25_-_10_apr_26.jpeg"
-    },
-    {
-      "name": "Maj A.O. Kilani",
-      "role": "Pioneer Supervisory Education Officer",
-      "tenure": "5 Jun 2025 – 18 Mar 2026",
-      "photo": "assets/images/past-officers/maj_ao_kilani_pioneer_supervisory_education_officer_5_jun_25_-_18_mar_26.jpeg"
-    },
-    {
-      "name": "Maj M.C. Abugu",
-      "role": "Pioneer SO3 G3",
-      "tenure": "5 Jun 2025 – 1 Jan 2026",
-      "photo": "assets/images/past-officers/maj_mc_abugu_pioneer_so3_g3_5_jun_25_-_1_jan_26.jpeg"
     },
     {
       "name": "Maj C.K. Gbegie",
@@ -95,6 +29,37 @@
       "role": "Pioneer Instructor",
       "tenure": "",
       "photo": "assets/images/past-officers/lt_chinedu-eze_pioneer_instructor.jpeg"
+    }
+  ],
+  "staff_roles": [
+    {
+      "role": "Regimental Sergeant Major",
+      "role_short": "RSM",
+      "current": {
+        "name": "MWO Amos Kassem",
+        "photo": "assets/images/staff/rsm.jpeg",
+        "bio": "Warrant Officer (Class One) Amos Kassem was born in 1973 to the family of Mr and Mrs Lupwi K. Chingyin in Lur District of Kanke Local Government Area of Plateau State. He was enlisted into the Nigerian Army in 1993 as a member of 36 Regular Intake.\n\nThroughout his military career, WO1 Kassem has served with commitment, professionalism and loyalty, contributing to the maintenance of peace, security and the defence of Nigeria's territorial integrity. His experience spans several years of active service during which he has participated in military operations, training exercises and internal security operations. His leadership qualities, commitment to regimentation and dedication to mentoring young soldiers have earned him the respect of colleagues and superiors alike.\n\nHe has attended various military courses including: Counter-Terrorist Course (Jaji), Amphibious Course (Calabar), Quick Response Course (Jaji), Regimental Intelligence Course TEGO (Lagos), Platoon Weapon Course (Jaji), Security Management (Bajams, Zaria), and Warrant Officer Academy Course (Jaji).\n\nHe holds a National Diploma in Security Management from Nuhu Bamalli Polytechnic, Zaria.\n\nHe has served in the following operations: ECOMOG, Operation Harmony IV Bakassi, African Mission in Sudan, Operation Hadin Kai (Maiduguri), Operation Polo Shield (Port Harcourt), and ECOMIG 4.\n\nWO1 Kassem is happily married and blessed with three children.",
+        "tenure": ""
+      },
+      "previous": []
+    },
+    {
+      "role": "Adjutant",
+      "role_short": "ADJ",
+      "current": null,
+      "previous": []
+    },
+    {
+      "role": "Finance Officer",
+      "role_short": "FIN",
+      "current": null,
+      "previous": []
+    },
+    {
+      "role": "Chief of Staff",
+      "role_short": "COS",
+      "current": null,
+      "previous": []
     }
   ]
 }

@@ -25,48 +25,96 @@
       <span class="brand-main">NIGERIAN ARMY DEPOT</span>
       <span class="brand-sub">Osogbo · Instructors &amp; Staff</span>
     </div>
+    <button class="back-btn hidden" id="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+      <span id="back-label">Back</span>
+    </button>
     <button class="kiosk-close" onclick="window.close()" title="Close">
       <svg viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
     </button>
   </nav>
 
-  <!-- Tab bar -->
-  <div class="tab-bar">
-    <button class="tab-btn active" id="tab-staff" onclick="showTab('staff')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/>
-      </svg>
-      Instructors &amp; Staff
-    </button>
-    <div class="tab-separator"></div>
-    <button class="tab-btn" id="tab-past" onclick="showTab('past')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
-      </svg>
-      Past Officers
-    </button>
+  <!-- ══ SCREEN: HOME ══ -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+      <div class="home-hero-label">Depot Nigerian Army, Osogbo</div>
+      <h1 class="home-hero-title">Instructors &amp; <em>Staff</em></h1>
+    </div>
+    <div class="home-cards">
+      <button class="home-card" onclick="showInstructors()">
+        <div class="home-card-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="16" cy="14" r="7"/>
+            <circle cx="32" cy="14" r="7"/>
+            <path d="M2 40c0-7 6.268-12 14-12"/>
+            <path d="M46 40c0-7-6.268-12-14-12"/>
+            <path d="M16 28c0-7 16-7 16 0"/>
+          </svg>
+        </div>
+        <div class="home-card-title">Instructors</div>
+        <div class="home-card-sub">Tap to learn more</div>
+        <div class="home-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </button>
+
+      <button class="home-card" onclick="showStaff()">
+        <div class="home-card-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="6" width="15" height="15" rx="3"/>
+            <rect x="27" y="6" width="15" height="15" rx="3"/>
+            <rect x="6" y="27" width="15" height="15" rx="3"/>
+            <rect x="27" y="27" width="15" height="15" rx="3"/>
+          </svg>
+        </div>
+        <div class="home-card-title">Staff</div>
+        <div class="home-card-sub">Tap to learn more</div>
+        <div class="home-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: INSTRUCTORS ══ -->
+  <div class="screen" id="screen-instructors">
+    <div class="sub-header">
+      <span class="sub-header-label">Depot Nigerian Army</span>
+      <div class="sub-header-sep"></div>
+      <h2 class="sub-header-title">Instructors</h2>
+      <span class="sub-header-count" id="instructors-count"></span>
+    </div>
+    <div class="sub-divider"></div>
+    <div class="grid-wrap">
+      <div class="officers-grid" id="instructors-grid"></div>
+    </div>
   </div>
 
   <!-- ══ SCREEN: STAFF ══ -->
-  <div class="screen active" id="screen-staff">
-    <div class="staff-header">
-      <div class="staff-header-label">Current Appointment Holders</div>
-      <h1 class="staff-header-title">Instructors &amp; <em>Key Staff</em></h1>
+  <div class="screen" id="screen-staff">
+    <div class="sub-header">
+      <span class="sub-header-label">Depot Nigerian Army</span>
+      <div class="sub-header-sep"></div>
+      <h2 class="sub-header-title">Key <em>Staff</em></h2>
     </div>
-    <div class="staff-row" id="staff-row"></div>
+    <div class="sub-divider"></div>
+    <div class="staff-roles-wrap">
+      <div class="staff-roles-grid" id="staff-roles-grid"></div>
+    </div>
   </div>
 
-  <!-- ══ SCREEN: PAST OFFICERS ══ -->
-  <div class="screen" id="screen-past">
-    <div class="past-header">
-      <span class="past-header-label">Pioneer Officers</span>
-      <div class="past-header-sep"></div>
-      <h2 class="past-header-title">Past <em>Officers</em></h2>
-      <span class="past-header-count" id="past-count"></span>
+  <!-- ══ SCREEN: ROLE DETAIL ══ -->
+  <div class="screen" id="screen-role-detail">
+    <div class="sub-header">
+      <span class="sub-header-label" id="role-detail-short"></span>
+      <div class="sub-header-sep"></div>
+      <h2 class="sub-header-title" id="role-detail-title"></h2>
     </div>
-    <div class="past-divider"></div>
-    <div class="past-grid-wrap">
-      <div class="past-grid" id="past-grid"></div>
+    <div class="sub-divider"></div>
+    <div class="role-detail-wrap">
+      <div id="role-detail-body"></div>
     </div>
   </div>
 
