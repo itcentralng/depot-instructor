@@ -1,0 +1,451 @@
+/* =====================================================
+   NIGERIAN ARMY DEPOT — INSTRUCTORS & STAFF SCREEN
+   Target: 1920 × 1080 landscape kiosk
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --gold:      rgba(220, 188, 120, 0.95);
+  --gold-dim:  rgba(166, 124, 62, 0.65);
+  --gold-line: rgba(166, 124, 62, 0.22);
+  --text:      rgba(240, 232, 218, 0.92);
+  --text-dim:  rgba(240, 232, 218, 0.55);
+  --f-head:    'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;
+  --f-serif:   'Cormorant Garamond', Georgia, serif;
+  --f-ui:      'Inter', system-ui, sans-serif;
+  --navbar-h:  72px;
+  --tab-h:     56px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(166,124,62,0.35); border-radius: 99px; }
+
+@keyframes fadeIn  { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+
+/* ── Background ── */
+.bg-layer { position: fixed; inset: 0; z-index: -1; background: #0e1410; }
+.bg-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center; pointer-events: none;
+}
+.bg-overlay {
+  position: absolute; inset: 0;
+  background: rgba(8,12,10,0.65); pointer-events: none;
+}
+
+/* ── Navbar ── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--navbar-h);
+  display: flex; align-items: center; gap: 18px; padding: 0 36px;
+  background: rgba(10,14,12,0.92);
+  border-bottom: 1px solid var(--gold-line);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  z-index: 200;
+}
+.navbar::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(166,124,62,0.95), transparent);
+}
+.nav-logo {
+  width: 44px; height: 44px; border-radius: 10px;
+  object-fit: contain; background: #fff; padding: 3px;
+  border: 1px solid rgba(166,124,62,0.30); flex-shrink: 0;
+}
+.brand { display: flex; flex-direction: column; gap: 2px; }
+.brand-main {
+  font-family: var(--f-head); font-size: 1.15rem; font-weight: 700;
+  letter-spacing: 4px; color: var(--gold); line-height: 1;
+}
+.brand-sub {
+  font-family: var(--f-head); font-size: 0.62rem;
+  letter-spacing: 2.5px; color: rgba(246,239,227,0.45); text-transform: uppercase;
+}
+
+/* ── Tab bar ── */
+.tab-bar {
+  position: fixed; top: var(--navbar-h); left: 0; right: 0;
+  height: var(--tab-h);
+  display: flex; align-items: stretch;
+  background: rgba(8,12,10,0.88);
+  border-bottom: 1px solid var(--gold-line);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.tab-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--f-head); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text-dim);
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  padding: 0 24px;
+  position: relative;
+}
+.tab-btn svg { width: 18px; height: 18px; opacity: 0.6; transition: opacity 0.2s; flex-shrink: 0; }
+.tab-btn.active {
+  color: var(--gold);
+  border-bottom-color: rgba(220,188,120,0.85);
+  background: rgba(166,124,62,0.06);
+}
+.tab-btn.active svg { opacity: 1; }
+.tab-btn:hover:not(.active) {
+  color: var(--text); background: rgba(255,255,255,0.03);
+}
+.tab-separator {
+  width: 1px; flex-shrink: 0;
+  background: var(--gold-line);
+  align-self: center; height: 28px;
+}
+
+/* ── Screens ── */
+.screen {
+  position: fixed;
+  top: calc(var(--navbar-h) + var(--tab-h));
+  left: 0; right: 0; bottom: 0;
+  display: none;
+}
+.screen.active { display: flex; }
+
+/* ════════════════════════════════════════════
+   SCREEN: STAFF (Instructors & Key Staff)
+   ════════════════════════════════════════════ */
+#screen-staff {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 60px;
+  gap: 32px;
+}
+
+.staff-header {
+  text-align: center;
+  animation: fadeIn 0.5s ease both;
+}
+.staff-header-label {
+  font-family: var(--f-head); font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase; color: var(--gold-dim);
+  margin-bottom: 8px;
+}
+.staff-header-title {
+  font-family: var(--f-serif); font-size: 2.2rem; font-weight: 600;
+  color: var(--text); line-height: 1.1;
+}
+.staff-header-title em { font-style: italic; color: var(--gold); }
+
+/* Staff cards row */
+.staff-row {
+  display: flex;
+  gap: 40px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Individual staff card */
+.staff-card {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer;
+  animation: fadeIn 0.5s ease both;
+  transition: transform 0.22s;
+}
+.staff-card:hover { transform: translateY(-5px); }
+
+.staff-photo-wrap {
+  width: 190px; height: 236px;
+  border-radius: 16px 16px 0 0; overflow: hidden;
+  border: 2px solid rgba(166,124,62,0.28);
+  border-bottom: none;
+  background: #192118; position: relative;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.50);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.staff-card:hover .staff-photo-wrap {
+  border-color: rgba(220,188,120,0.68);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.65);
+}
+.staff-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+.staff-silhouette {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-dim);
+}
+.staff-silhouette svg { width: 64px; height: 64px; opacity: 0.35; }
+
+/* Short-role badge sits between photo and name, flush */
+.staff-role-badge {
+  width: 190px;
+  background: rgba(166,124,62,0.18);
+  border: 2px solid rgba(166,124,62,0.28);
+  border-top: none; border-bottom: none;
+  padding: 7px 10px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.staff-card:hover .staff-role-badge { border-color: rgba(220,188,120,0.68); }
+.staff-role-badge-text {
+  font-family: var(--f-head); font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--gold-dim);
+}
+
+.staff-card-info {
+  width: 190px;
+  background: rgba(14,20,16,0.80);
+  border: 2px solid rgba(166,124,62,0.28);
+  border-top: 1px solid rgba(166,124,62,0.12);
+  border-radius: 0 0 16px 16px;
+  padding: 14px 14px 16px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.staff-card:hover .staff-card-info { border-color: rgba(220,188,120,0.68); }
+
+.staff-card-name {
+  font-family: var(--f-head); font-size: 0.95rem; font-weight: 700;
+  letter-spacing: 0.3px; text-transform: uppercase;
+  color: var(--text); line-height: 1.2; margin-bottom: 10px;
+}
+.staff-card-name.vacant {
+  color: var(--text-dim); font-style: italic; font-weight: 400; letter-spacing: 1px; font-size: 0.80rem;
+}
+.staff-profile-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px;
+  background: rgba(166,124,62,0.12);
+  border: 1px solid rgba(166,124,62,0.35);
+  border-radius: 6px;
+  font-family: var(--f-head); font-size: 0.60rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold-dim); cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.staff-profile-btn:hover {
+  background: rgba(166,124,62,0.22); border-color: var(--gold); color: var(--gold);
+}
+.staff-profile-btn svg { width: 12px; height: 12px; }
+.staff-profile-btn.hidden { display: none; }
+
+/* RSM — larger/featured */
+.staff-card.rsm .staff-photo-wrap { width: 220px; height: 276px; }
+.staff-card.rsm .staff-role-badge { width: 220px; }
+.staff-card.rsm .staff-card-info { width: 220px; }
+.staff-card.rsm .staff-card-name { font-size: 1.05rem; }
+
+/* ════════════════════════════════════════════
+   SCREEN: PAST OFFICERS
+   ════════════════════════════════════════════ */
+#screen-past {
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.past-header {
+  flex-shrink: 0;
+  padding: 28px 60px 20px;
+  display: flex; align-items: center; gap: 20px;
+}
+.past-header-label {
+  font-family: var(--f-head); font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase; color: var(--gold-dim);
+}
+.past-header-sep {
+  width: 1px; height: 20px; background: var(--gold-dim); flex-shrink: 0;
+}
+.past-header-title {
+  font-family: var(--f-serif); font-size: 2rem; font-weight: 600;
+  color: var(--text); line-height: 1;
+}
+.past-header-title em { font-style: italic; color: var(--gold); }
+.past-header-count {
+  margin-left: auto;
+  font-family: var(--f-head); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 2px; color: var(--text-dim);
+}
+
+.past-divider {
+  flex-shrink: 0; height: 1px; margin: 0 60px;
+  background: linear-gradient(90deg, rgba(166,124,62,0.50), transparent);
+}
+
+.past-grid-wrap {
+  flex: 1; min-height: 0;
+  overflow-y: auto; overflow-x: hidden;
+  padding: 28px 60px 40px;
+}
+
+.past-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 28px;
+}
+
+/* Past officer card */
+.past-card {
+  display: flex; flex-direction: column;
+  cursor: pointer;
+  animation: fadeIn 0.4s ease both;
+  transition: transform 0.2s;
+}
+.past-card:hover:not(.no-hover) { transform: translateY(-5px); }
+.past-card:hover:not(.no-hover) .past-photo-wrap {
+  border-color: rgba(220,188,120,0.60);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.60);
+}
+.past-card:hover:not(.no-hover) .past-card-footer { border-color: rgba(220,188,120,0.60); }
+
+.past-photo-wrap {
+  width: 100%; aspect-ratio: 3/4;
+  border-radius: 14px 14px 0 0; overflow: hidden;
+  border: 2px solid rgba(166,124,62,0.22);
+  border-bottom: none;
+  background: #192118; position: relative;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.past-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+.past-silhouette {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-dim);
+}
+.past-silhouette svg { width: 52px; height: 52px; opacity: 0.30; }
+
+.past-photo-gradient {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+  background: linear-gradient(to top, rgba(6,10,8,0.92) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.past-card-footer {
+  background: rgba(14,20,16,0.82);
+  border: 2px solid rgba(166,124,62,0.22);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  padding: 12px 12px 14px;
+  transition: border-color 0.2s;
+}
+
+.past-card-role {
+  font-family: var(--f-head); font-size: 0.55rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dim);
+  margin-bottom: 3px;
+}
+.past-card-name {
+  font-family: var(--f-head); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.3px; text-transform: uppercase;
+  color: var(--text); line-height: 1.2; margin-bottom: 5px;
+}
+.past-card-tenure {
+  font-family: var(--f-ui); font-size: 0.65rem;
+  color: var(--text-dim); letter-spacing: 0.2px;
+}
+
+/* ════════════════════════════════════════════
+   PROFILE MODAL
+   ════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(4,8,6,0.78);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-card {
+  display: flex;
+  width: 860px; max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 20px; overflow: hidden;
+  animation: scaleIn 0.25s ease both;
+  position: relative;
+  background: rgba(12,18,14,0.94);
+  border: 1px solid rgba(166,124,62,0.20);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+}
+
+.modal-close {
+  position: absolute; top: 16px; right: 20px; z-index: 10;
+  background: rgba(0,0,0,0.40); border: 1px solid rgba(166,124,62,0.30);
+  border-radius: 50%; width: 36px; height: 36px;
+  color: var(--text); font-size: 1.3rem; line-height: 1;
+  cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { background: rgba(166,124,62,0.25); border-color: var(--gold); }
+
+.modal-photo-frame {
+  width: 280px; flex-shrink: 0;
+  position: relative; overflow: hidden;
+  background: #141c12;
+}
+.modal-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+.modal-photo-silhouette {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-dim);
+}
+.modal-photo-silhouette svg { width: 80px; height: 80px; opacity: 0.30; }
+.modal-photo-shine {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+}
+
+.modal-body {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column;
+  padding: 36px 36px 28px;
+  overflow: hidden;
+}
+.modal-role {
+  font-family: var(--f-head); font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 8px;
+}
+.modal-name {
+  font-family: var(--f-head); font-size: 1.55rem; font-weight: 700;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  color: var(--text); line-height: 1.15; margin-bottom: 6px;
+}
+.modal-tenure {
+  font-family: var(--f-ui); font-size: 0.75rem;
+  color: var(--text-dim); margin-bottom: 16px; letter-spacing: 0.3px;
+}
+.modal-tenure.hidden { display: none; }
+.modal-divider {
+  height: 1px; margin-bottom: 20px;
+  background: linear-gradient(90deg, rgba(166,124,62,0.55), transparent);
+}
+.modal-bio-scroll {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding-right: 8px;
+}
+.modal-bio {
+  font-family: var(--f-serif); font-size: 1.05rem; font-weight: 400;
+  line-height: 1.80; color: rgba(240,232,218,0.82);
+  white-space: pre-wrap;
+}
+
+.hidden { display: none !important; }

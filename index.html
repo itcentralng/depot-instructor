@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depot Nigerian Army — Instructors &amp; Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="bg-layer" aria-hidden="true">
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="assets/images/nigerian_army_depot_pan_left_to_right_10s.mp4" type="video/mp4">
+    </video>
+    <div class="bg-overlay"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <img src="assets/images/logo.png" alt="Depot Logo" class="nav-logo" onerror="this.style.display='none'">
+    <div class="brand">
+      <span class="brand-main">NIGERIAN ARMY DEPOT</span>
+      <span class="brand-sub">Osogbo · Instructors &amp; Staff</span>
+    </div>
+  </nav>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-staff" onclick="showTab('staff')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/>
+      </svg>
+      Instructors &amp; Staff
+    </button>
+    <div class="tab-separator"></div>
+    <button class="tab-btn" id="tab-past" onclick="showTab('past')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
+      </svg>
+      Past Officers
+    </button>
+  </div>
+
+  <!-- ══ SCREEN: STAFF ══ -->
+  <div class="screen active" id="screen-staff">
+    <div class="staff-header">
+      <div class="staff-header-label">Current Appointment Holders</div>
+      <h1 class="staff-header-title">Instructors &amp; <em>Key Staff</em></h1>
+    </div>
+    <div class="staff-row" id="staff-row"></div>
+  </div>
+
+  <!-- ══ SCREEN: PAST OFFICERS ══ -->
+  <div class="screen" id="screen-past">
+    <div class="past-header">
+      <span class="past-header-label">Pioneer Officers</span>
+      <div class="past-header-sep"></div>
+      <h2 class="past-header-title">Past <em>Officers</em></h2>
+      <span class="past-header-count" id="past-count"></span>
+    </div>
+    <div class="past-divider"></div>
+    <div class="past-grid-wrap">
+      <div class="past-grid" id="past-grid"></div>
+    </div>
+  </div>
+
+  <!-- ══ PROFILE MODAL ══ -->
+  <div class="modal-overlay hidden" id="modal" onclick="closeModal(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal-photo-frame">
+        <img class="modal-photo" id="modal-photo" src="" alt="">
+        <div class="modal-photo-silhouette hidden" id="modal-photo-sil">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">
+            <circle cx="12" cy="8" r="5"/><path d="M3 21c0-5 3.582-9 9-9s9 4 9 9"/>
+          </svg>
+        </div>
+        <div class="modal-photo-shine" aria-hidden="true"></div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-role" id="modal-role"></div>
+        <h2 class="modal-name" id="modal-name"></h2>
+        <div class="modal-tenure hidden" id="modal-tenure"></div>
+        <div class="modal-divider"></div>
+        <div class="modal-bio-scroll">
+          <p class="modal-bio" id="modal-bio"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
