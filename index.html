@@ -146,5 +146,15 @@
 
   <script src="data.js"></script>
   <script src="script.js"></script>
+  <script>
+    (function () {
+      var v = document.querySelector('.bg-video');
+      if (!v) return;
+      v.muted = true;
+      var tryPlay = function () { v.play().catch(function () {}); };
+      tryPlay();
+      document.addEventListener('click', tryPlay, { once: true });
+    })();
+  </script>
 </body>
 </html>
