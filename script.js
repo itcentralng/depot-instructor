@@ -141,104 +141,135 @@
     var body = document.getElementById('role-detail-body');
     body.innerHTML = '';
 
-    // Current holder
-    var section = document.createElement('div');
-    section.className = 'role-detail-section';
+    var wrap = document.createElement('div');
+    wrap.className = 'role-detail-wrap';
 
-    var currentLabel = document.createElement('div');
-    currentLabel.className = 'role-detail-section-label';
-    currentLabel.textContent = 'Current';
-    section.appendChild(currentLabel);
+    // ── Hero strip (current holder) ──
+    var hero = document.createElement('div');
+    hero.className = 'rd-hero';
 
-    if (role.current && role.current.name) {
-      section.appendChild(makePersonCard(role.role, role.current, true));
+    var cur = role.current && role.current.name ? role.current : null;
+
+    // Photo frame
+    var photoFrame = document.createElement('div');
+    photoFrame.className = 'rd-photo-frame';
+    if (cur && cur.photo) {
+      var img = document.createElement('img');
+      img.className = 'rd-photo'; img.src = cur.photo; img.alt = cur.name || '';
+      var sil = document.createElement('div');
+      sil.className = 'rd-photo-sil hidden'; sil.innerHTML = SIL_SVG;
+      img.onerror = function () { img.style.display = 'none'; sil.classList.remove('hidden'); };
+      photoFrame.appendChild(img); photoFrame.appendChild(sil);
+    } else {
+      var sil = document.createElement('div');
+      sil.className = 'rd-photo-sil'; sil.innerHTML = SIL_SVG;
+      photoFrame.appendChild(sil);
+    }
+    var shine = document.createElement('div');
+    shine.className = 'rd-photo-shine';
+    photoFrame.appendChild(shine);
+    hero.appendChild(photoFrame);
+
+    // Info (right of photo)
+    var info = document.createElement('div');
+    info.className = 'rd-info';
+    if (cur) {
+      var badge = document.createElement('div');
+      badge.className = 'rd-role-badge';
+      badge.textContent = 'CURRENT ' + role.role_short;
+      info.appendChild(badge);
+
+      var nameEl = document.createElement('div');
+      nameEl.className = 'rd-name';
+      nameEl.textContent = cur.name;
+      info.appendChild(nameEl);
+
+      if (cur.tenure) {
+        var tenureEl = document.createElement('div');
+        tenureEl.className = 'rd-tenure';
+        tenureEl.textContent = cur.tenure;
+        info.appendChild(tenureEl);
+      }
     } else {
       var empty = document.createElement('div');
-      empty.className = 'role-detail-empty';
+      empty.className = 'rd-empty';
       empty.textContent = 'No current appointment holder on record.';
-      section.appendChild(empty);
+      info.appendChild(empty);
     }
-    body.appendChild(section);
+    hero.appendChild(info);
+    wrap.appendChild(hero);
 
-    // Previous holders
+    // ── Bio card ──
+    if (cur && cur.bio) {
+      var bioCard = document.createElement('div');
+      bioCard.className = 'rd-bio-card';
+      var bioText = document.createElement('p');
+      bioText.className = 'rd-bio-text';
+      bioText.textContent = cur.bio;
+      bioCard.appendChild(bioText);
+      wrap.appendChild(bioCard);
+    }
+
+    // ── Previous holders ──
+    var prevSection = document.createElement('div');
+    var prevLabel = document.createElement('div');
+    prevLabel.className = 'rd-section-label';
+    prevLabel.textContent = 'Previous';
+    prevSection.appendChild(prevLabel);
+
     if (role.previous && role.previous.length) {
-      var prevSection = document.createElement('div');
-      prevSection.className = 'role-detail-section';
-
-      var prevLabel = document.createElement('div');
-      prevLabel.className = 'role-detail-section-label';
-      prevLabel.textContent = 'Previous';
-      prevSection.appendChild(prevLabel);
-
+      var list = document.createElement('div');
+      list.className = 'rd-past-list';
       role.previous.forEach(function (p) {
-        prevSection.appendChild(makePersonCard(role.role, p, false));
+        list.appendChild(makePastCard(role, p));
       });
-
-      body.appendChild(prevSection);
+      prevSection.appendChild(list);
+    } else {
+      var noprev = document.createElement('div');
+      noprev.className = 'rd-past-empty';
+      noprev.textContent = 'No previous holders on record.';
+      prevSection.appendChild(noprev);
     }
+    wrap.appendChild(prevSection);
 
+    body.appendChild(wrap);
     setScreen('screen-role-detail', 'screen-staff');
   }
 
-  function makePersonCard(roleLabel, person, isCurrent) {
-    var card = document.createElement('div');
-    card.className = 'person-card' + (person.bio ? ' clickable' : '');
+  function makePastCard(role, person) {
+    var card = document.createElement('button');
+    card.className = 'rd-past-card';
 
     var photoWrap = document.createElement('div');
-    photoWrap.className = 'person-photo-wrap';
-
+    photoWrap.className = 'rd-past-photo-wrap';
     if (person.photo) {
       var img = document.createElement('img');
-      img.className = 'person-photo'; img.src = person.photo; img.alt = person.name;
+      img.className = 'rd-past-photo'; img.src = person.photo; img.alt = person.name || '';
       var sil = document.createElement('div');
-      sil.className = 'person-sil hidden'; sil.innerHTML = SIL_SVG;
+      sil.className = 'rd-past-sil hidden'; sil.innerHTML = SIL_SVG;
       img.onerror = function () { img.style.display = 'none'; sil.classList.remove('hidden'); };
       photoWrap.appendChild(img); photoWrap.appendChild(sil);
     } else {
       var sil = document.createElement('div');
-      sil.className = 'person-sil'; sil.innerHTML = SIL_SVG;
+      sil.className = 'rd-past-sil'; sil.innerHTML = SIL_SVG;
       photoWrap.appendChild(sil);
     }
-
-    var shine = document.createElement('div');
-    shine.className = 'person-photo-shine';
-    photoWrap.appendChild(shine);
-
-    var info = document.createElement('div');
-    info.className = 'person-info';
-
-    if (isCurrent) {
-      var badge = document.createElement('div');
-      badge.className = 'person-current-badge';
-      badge.textContent = 'CURRENT';
-      info.appendChild(badge);
-    }
-
-    var nameEl = document.createElement('div');
-    nameEl.className = 'person-name';
-    nameEl.textContent = person.name || '';
-    info.appendChild(nameEl);
-
-    if (person.tenure) {
-      var tenureEl = document.createElement('div');
-      tenureEl.className = 'person-tenure';
-      tenureEl.textContent = person.tenure;
-      info.appendChild(tenureEl);
-    }
-
-    if (person.bio) {
-      var hint = document.createElement('div');
-      hint.className = 'person-bio-hint';
-      hint.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg> Tap to view profile';
-      info.appendChild(hint);
-    }
-
     card.appendChild(photoWrap);
-    card.appendChild(info);
+
+    var infoEl = document.createElement('div');
+    infoEl.className = 'rd-past-info';
+    infoEl.innerHTML =
+      '<div class="rd-past-name">' + (person.name || '') + '</div>' +
+      (person.tenure ? '<div class="rd-past-tenure">' + person.tenure + '</div>' : '');
+    card.appendChild(infoEl);
 
     if (person.bio) {
+      var cta = document.createElement('div');
+      cta.className = 'rd-past-cta';
+      cta.textContent = 'View ›';
+      card.appendChild(cta);
       card.addEventListener('click', function () {
-        openModal(roleLabel, person.name, person.bio, person.photo, person.tenure);
+        openModal(role.role, person.name, person.bio, person.photo, person.tenure);
       });
     }
 
