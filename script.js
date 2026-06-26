@@ -246,12 +246,17 @@
   }
 
   // ── Load data ─────────────────────────────────────────
-  fetch('data.json')
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      buildInstructors(data.instructors || []);
-      buildStaffRoles(data.staff_roles || []);
-    })
-    .catch(function (e) { console.error('data.json load error', e); });
+  if (typeof STAFF_DATA !== 'undefined') {
+    buildInstructors(STAFF_DATA.instructors || []);
+    buildStaffRoles(STAFF_DATA.staff_roles || []);
+  } else {
+    fetch('data.json')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        buildInstructors(data.instructors || []);
+        buildStaffRoles(data.staff_roles || []);
+      })
+      .catch(function (e) { console.error('data.json load error', e); });
+  }
 
 })();
