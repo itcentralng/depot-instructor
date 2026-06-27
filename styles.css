@@ -327,7 +327,7 @@ html, body {
 
 .staff-roles-grid {
   display: grid;
-  grid-template-columns: repeat(2, 300px);
+  grid-template-columns: repeat(3, 300px);
   gap: 28px;
 }
 
