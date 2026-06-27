@@ -50,12 +50,6 @@ var STAFF_DATA = {
       "previous": []
     },
     {
-      "role": "Finance Officer",
-      "role_short": "FIN",
-      "current": null,
-      "previous": []
-    },
-    {
       "role": "Chief of Staff",
       "role_short": "COS",
       "current": null,
